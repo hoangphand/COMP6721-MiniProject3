@@ -6,6 +6,7 @@ from string import ascii_lowercase
 
 FR_TRAINING_CORPUS_PATH = "training_text/trainFR.txt"
 EN_TRAINING_CORPUS_PATH = "training_text/trainEN.txt"
+OT_TRAINING_CORPUS_PATH = "training_text/trainOT.txt"
 TEST_SENTENCES_PATH = "test_sentences.txt"
 DUMP_UNI_LANG_MODEL_EN = "dump_models/unigramEN.txt"
 DUMP_UNI_LANG_MODEL_FR = "dump_models/unigramFR.txt"
