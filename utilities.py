@@ -29,24 +29,6 @@ def extract_basic_corpus(corpus_path, is_with_space = True):
 
 	return corpus
 
-def extract_basic_ngram(corpus, n, delta = 0.5):
-	basic_ngram = {}
-	total_count = 0
-
-	for char in ascii_lowercase:
-		basic_ngram[char] = 0
-
-	for i in range(0, len(corpus)):
-		element = corpus[i:i + n]
-		if element.isalpha():
-			total_count += 1
-			basic_ngram[element] += 1
-
-	for key in basic_ngram:
-		basic_ngram[key] = (basic_ngram[key] + delta) / (total_count + delta * len(basic_ngram))
-
-	return basic_ngram
-
 def extract_ngram_char(corpus, n):
 	ngram = [{}]
 	ngram_1 = {"total_count": 0}
@@ -107,6 +89,14 @@ def cal_ngram_char_prob(ngram, n, delta = 0.5):
 
 	return ngram_n
 
+def read_test_sentences_original(path):
+	lines = []
+
+	with open(path, "r") as input_file:
+		lines = input_file.readlines()
+
+	return lines
+
 def read_test_sentences(path):
 	lines = []
 	processed_lines = []
@@ -125,16 +115,6 @@ def read_test_sentences(path):
 		processed_lines.append(line)
 
 	return processed_lines
-
-def cal_ngram_prob(ngram, n, test):
-	prob = 0
-
-	for i in range(0, len(test)):
-		element = test[i:i + n]
-		if len(element) == n:
-			prob += math.log(ngram[element], 10)
-
-	return prob
 
 def cal_lang_char_prob(ngram, n, test):
 	prob = 0
