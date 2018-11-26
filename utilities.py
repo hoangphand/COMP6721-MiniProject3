@@ -92,11 +92,16 @@ def cal_ngram_char_prob(ngram, n, delta = 0.5):
 
 def read_test_sentences_original(path):
 	lines = []
+	stripped_lines = []
 
 	with open(path, "r") as input_file:
 		lines = input_file.readlines()
 
-	return lines
+	for line in lines:
+		line = line.rstrip()
+		stripped_lines.append(line)
+
+	return stripped_lines
 
 def read_test_sentences(path):
 	lines = []
