@@ -3,6 +3,7 @@ import re
 import string
 import math
 from string import ascii_lowercase
+import copy
 
 FR_TRAINING_CORPUS_PATH = "training_text/trainFR.txt"
 EN_TRAINING_CORPUS_PATH = "training_text/trainEN.txt"
@@ -67,7 +68,7 @@ def extract_ngram_char(corpus, n):
 	return ngram
 
 def cal_ngram_char_prob(ngram, n, delta = 0.5):
-	ngram_n = ngram[n]
+	ngram_n = copy.deepcopy(ngram[n])
 	# count for non-zero total_count keys
 	size_ngram = 0
 	for key in ngram_n:
@@ -79,7 +80,7 @@ def cal_ngram_char_prob(ngram, n, delta = 0.5):
 			if key != "total_count":
 				ngram_n[key]["total_count"] = (ngram_n[key]["total_count"] + delta) / (ngram_n["total_count"] + delta * size_ngram)
 	else:
-		ngram_prev = ngram[n - 1]
+		ngram_prev = copy.deepcopy(ngram[n - 1])
 
 		for key in ngram_n:
 			if key != "total_count":

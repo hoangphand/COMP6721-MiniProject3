@@ -43,34 +43,34 @@ According to the unigram model, the sentence is in Other
 BIGRAM MODEL: 
 
 BIGRAM: ih
-FRENCH: P(i|h) = 0.0992777983864  log prob of sentence so far: -1.00314786244
-ENGLISH: P(i|h) = 0.819842477525  log prob of sentence so far: -0.0862695838522
-OTHER: P(i|h) = 1.96907139409  log prob of sentence so far: 0.294261462963
+FRENCH: P(i|h) = 0.000558134069679  log prob of sentence so far: -3.25326146642
+ENGLISH: P(i|h) = 0.0036496074594  log prob of sentence so far: -2.43775384442
+OTHER: P(i|h) = 0.0348826020015  log prob of sentence so far: -1.45739112716
 
 BIGRAM: ha
-FRENCH: P(h|a) = 5.66709255904  log prob of sentence so far: -0.249787556534
-ENGLISH: P(h|a) = 43.3502128602  log prob of sentence so far: 1.55072165046
-OTHER: P(h|a) = 11.1009563585  log prob of sentence so far: 1.33962185826
+FRENCH: P(h|a) = 0.284253757427  log prob of sentence so far: -3.79955525228
+ENGLISH: P(h|a) = 0.20098845491  log prob of sentence so far: -3.13458273283
+OTHER: P(h|a) = 0.228324022346  log prob of sentence so far: -2.09883952043
 
 BIGRAM: at
-FRENCH: P(a|t) = 11.4374238827  log prob of sentence so far: 0.808540660272
-ENGLISH: P(a|t) = 36.3854686863  log prob of sentence so far: 3.11164962396
-OTHER: P(a|t) = 7.79649852842  log prob of sentence so far: 2.23152145952
+FRENCH: P(a|t) = 0.0561935240964  log prob of sentence so far: -5.04986898317
+ENGLISH: P(a|t) = 0.136155482867  log prob of sentence so far: -4.00054759813
+OTHER: P(a|t) = 0.110943658706  log prob of sentence so far: -3.05373703646
 
 BIGRAM: te
-FRENCH: P(t|e) = 34.787895838  log prob of sentence so far: 2.34996882131
-ENGLISH: P(t|e) = 25.8441814043  log prob of sentence so far: 4.52401240472
-OTHER: P(t|e) = 0.317800346038  log prob of sentence so far: 1.73367582527
+FRENCH: P(t|e) = 0.209840095816  log prob of sentence so far: -5.72798050728
+ENGLISH: P(t|e) = 0.0857245801595  log prob of sentence so far: -5.06744223132
+OTHER: P(t|e) = 0.00698007397685  log prob of sentence so far: -5.20987701103
 
 BIGRAM: ea
-FRENCH: P(e|a) = 12.6213991342  log prob of sentence so far: 3.45107632222
-ENGLISH: P(e|a) = 34.822467243  log prob of sentence so far: 6.06587194324
-OTHER: P(e|a) = 0.0950873336058  log prob of sentence so far: 0.71179849456
+FRENCH: P(e|a) = 0.0304997601757  log prob of sentence so far: -7.24368408285
+ENGLISH: P(e|a) = 0.0868665145441  log prob of sentence so far: -6.1285898352
+OTHER: P(e|a) = 0.00385717434428  log prob of sentence so far: -7.62360774161
 
 BIGRAM: ai
-FRENCH: P(a|i) = 40.7076151073  log prob of sentence so far: 5.06075198181
-ENGLISH: P(a|i) = 11.8795491596  log prob of sentence so far: 7.14067190231
-OTHER: P(a|i) = 7.25337776712  log prob of sentence so far: 1.57233879134
+FRENCH: P(a|i) = 0.200001711391  log prob of sentence so far: -7.94265037096
+ENGLISH: P(a|i) = 0.044453618724  log prob of sentence so far: -7.48068271494
+OTHER: P(a|i) = 0.103215086174  log prob of sentence so far: -8.60986456212
 
 According to the unigram model, the sentence is in English
 

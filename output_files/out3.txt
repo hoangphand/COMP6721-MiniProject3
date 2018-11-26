@@ -28,19 +28,19 @@ According to the unigram model, the sentence is in Other
 BIGRAM MODEL: 
 
 BIGRAM: im
-FRENCH: P(i|m) = 5.1084523275  log prob of sentence so far: 0.708289344863
-ENGLISH: P(i|m) = 10.0434946988  log prob of sentence so far: 1.00188485467
-OTHER: P(i|m) = 2.90879374217  log prob of sentence so far: 0.463712927224
+FRENCH: P(i|m) = 0.028719425024  log prob of sentence so far: -1.54182425912
+ENGLISH: P(i|m) = 0.0447095804085  log prob of sentence so far: -1.34959940589
+OTHER: P(i|m) = 0.0515300230947  log prob of sentence so far: -1.2879396629
 
 BIGRAM: mo
-FRENCH: P(m|o) = 11.369864164  log prob of sentence so far: 1.76404462106
-ENGLISH: P(m|o) = 10.8802499273  log prob of sentence so far: 2.03852372621
-OTHER: P(m|o) = 3.49119610103  log prob of sentence so far: 1.00668717111
+FRENCH: P(m|o) = 0.151340196624  log prob of sentence so far: -2.36186996524
+ENGLISH: P(m|o) = 0.134957569121  log prob of sentence so far: -2.21940215882
+OTHER: P(m|o) = 0.169034464615  log prob of sentence so far: -2.0599644005
 
 BIGRAM: ok
-FRENCH: P(o|k) = 0.0505132901399  log prob of sentence so far: 0.46745027789
-ENGLISH: P(o|k) = 3.35570681428  log prob of sentence so far: 2.56430773602
-OTHER: P(o|k) = 0.817439786259  log prob of sentence so far: 0.919142942892
+FRENCH: P(o|k) = 0.00039037260392  log prob of sentence so far: -5.77039063366
+ENGLISH: P(o|k) = 0.0141146736919  log prob of sentence so far: -4.0697313164
+OTHER: P(o|k) = 0.012627957711  log prob of sentence so far: -3.95863128166
 
-According to the unigram model, the sentence is in English
+According to the unigram model, the sentence is in Other
 
