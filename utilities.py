@@ -3,6 +3,7 @@ import re
 import string
 import math
 from string import ascii_lowercase
+from string import ascii_uppercase
 import copy
 
 FR_TRAINING_CORPUS_PATH = "training_text/trainFR.txt"
@@ -27,7 +28,16 @@ def extract_basic_corpus(corpus_path):
 
 	return corpus
 
-def extract_ngram_char(corpus, n):
+def extract_corpus_experimental(corpus_path, case_sensitive = False):
+	with open(corpus_path, "r") as input_file:
+		corpus = input_file.read()
+
+	if case_sensitive is False:
+		corpus = corpus.lower()
+
+	return corpus
+
+def extract_basic_ngram_char(corpus, n):
 	ngram = [{}]
 	ngram_1 = {"total_count": 0}
 	total_count_1 = 0
@@ -56,6 +66,53 @@ def extract_ngram_char(corpus, n):
 			for j in range(0, len(corpus)):
 				element = corpus[j:j + i]
 				if element.isalpha() and len(element) == i:
+					ngram_n["total_count"] += 1
+					ngram_n[element]["total_count"] += 1
+
+			ngram.append(ngram_n)
+			i = i + 1
+	
+	return ngram
+
+def extract_experimental_ngram_char(corpus, n, case_sensitive = False):
+	ngram = [{}]
+	ngram_1 = {"total_count": 0}
+	total_count_1 = 0
+
+	for char in ascii_lowercase:
+		ngram_1[char] = {"total_count": 0}
+
+	if case_sensitive:
+		for char in ascii_uppercase:
+			ngram_1[char] = {"total_count": 0}
+
+	ngram_1[" "] = {"total_count": 0}
+
+	for i in range(0, len(corpus)):
+		element = corpus[i:i + 1]
+		ngram_1["total_count"] += 1
+		ngram_1[element]["total_count"] += 1
+
+	ngram.append(ngram_1)
+
+	if n > 1:
+		i = 2
+		while i <= n:
+			ngram_n = {"total_count": 0}
+
+			for key in ngram[i - 1]:
+				if key != "total_count":
+					for char in ascii_lowercase:
+						ngram_n[key + char] = {"total_count": 0}
+					if case_sensitive:
+						for char in ascii_uppercase:
+							ngram_n[key + char] = {"total_count": 0}
+					if key != " ":
+						ngram_n[key + " "] = {"total_count": 0}
+
+			for j in range(0, len(corpus)):
+				element = corpus[j:j + i]
+				if len(element) == i:
 					ngram_n["total_count"] += 1
 					ngram_n[element]["total_count"] += 1
 
@@ -100,7 +157,7 @@ def read_test_sentences_original(path):
 
 	return stripped_lines
 
-def read_test_sentences(path):
+def read_test_sentences_strip(path):
 	lines = []
 	processed_lines = []
 
@@ -110,10 +167,38 @@ def read_test_sentences(path):
 	for line in lines:
 		line = line.rstrip()
 		line = line.lower()
+		line = ''.join(c for c in line if not c.isdigit())
+
 		for punctuation in string.punctuation:
 			line = line.replace(punctuation, "")
 
 		line = line.replace(" ", "")
+
+		processed_lines.append(line)
+
+	return processed_lines
+
+def read_test_sentences(path, case_sensitive = False):
+	lines = []
+	processed_lines = []
+
+	with open(path, "r") as input_file:
+		lines = input_file.readlines()
+
+	for line in lines:
+		line = line.rstrip()
+		if case_sensitive is False:
+			line = line.lower()
+		line = ''.join(c for c in line if not c.isdigit())
+
+		for punctuation in string.punctuation:
+			line = line.replace(punctuation, " ")
+
+		list_words = line.split()
+
+		line = ""
+		for word in list_words:
+			line += word + " "
 
 		processed_lines.append(line)
 
@@ -124,7 +209,7 @@ def cal_lang_char_prob(ngram, n, test):
 
 	for i in range(0, len(test)):
 		element = test[i:i + n]
-		if len(element) == n:
+		if len(element) == n and element.replace(" ", "").isalpha():
 			prob += math.log(ngram[element]["total_count"], 10)
 
 	return prob

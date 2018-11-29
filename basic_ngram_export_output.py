@@ -6,13 +6,13 @@ with_space = False
 # with_space = True
 
 en_basic_corpus = utilities.extract_basic_corpus(utilities.EN_TRAINING_CORPUS_PATH, with_space)
-en_basic_ngram_dict = utilities.extract_ngram_char(en_basic_corpus, n)
+en_basic_ngram_dict = utilities.extract_basic_ngram_char(en_basic_corpus, n)
 
 fr_basic_corpus = utilities.extract_basic_corpus(utilities.FR_TRAINING_CORPUS_PATH, with_space)
-fr_basic_ngram_dict = utilities.extract_ngram_char(fr_basic_corpus, n)
+fr_basic_ngram_dict = utilities.extract_basic_ngram_char(fr_basic_corpus, n)
 
 vi_basic_corpus = utilities.extract_basic_corpus(utilities.OT_TRAINING_CORPUS_PATH, with_space)
-vi_basic_ngram_dict = utilities.extract_ngram_char(vi_basic_corpus, n)
+vi_basic_ngram_dict = utilities.extract_basic_ngram_char(vi_basic_corpus, n)
 
 test_lines = utilities.read_test_sentences(utilities.TEST_SENTENCES_PATH)
 test_lines_original = utilities.read_test_sentences_original(utilities.TEST_SENTENCES_PATH)
