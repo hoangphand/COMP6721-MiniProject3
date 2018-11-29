@@ -9,6 +9,7 @@ FR_TRAINING_CORPUS_PATH = "training_text/trainFR.txt"
 EN_TRAINING_CORPUS_PATH = "training_text/trainEN.txt"
 OT_TRAINING_CORPUS_PATH = "training_text/trainOT.txt"
 TEST_SENTENCES_PATH = "test_sentences.txt"
+NEW_TEST_SENTENCES_PATH = "new_test_sentences.txt"
 DUMP_UNI_LANG_MODEL_EN = "dump_models/unigramEN.txt"
 DUMP_UNI_LANG_MODEL_FR = "dump_models/unigramFR.txt"
 DUMP_UNI_LANG_MODEL_OT = "dump_models/unigramOT.txt"
@@ -16,17 +17,13 @@ DUMP_BI_LANG_MODEL_EN = "dump_models/bigramEN.txt"
 DUMP_BI_LANG_MODEL_FR = "dump_models/bigramFR.txt"
 DUMP_BI_LANG_MODEL_OT = "dump_models/bigramOT.txt"
 
-def extract_basic_corpus(corpus_path, is_with_space = True):
+def extract_basic_corpus(corpus_path):
 	with open(corpus_path, "r") as input_file:
 		original_content = input_file.read()
 
 	corpus = original_content.lower()
 
-	if is_with_space is False:
-		corpus = corpus.replace(" ", "").replace("\n", "").replace("\r", "")
-
-	for punctuation in string.punctuation:
-		corpus = corpus.replace(punctuation, "")	
+	corpus = corpus.replace(" ", "").replace("\r", "")
 
 	return corpus
 
