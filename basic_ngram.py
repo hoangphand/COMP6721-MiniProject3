@@ -14,18 +14,18 @@ vi_basic_ngram_dict = utilities.extract_basic_ngram_char(vi_basic_corpus, n)
 test_lines = utilities.read_test_sentences_strip(utilities.TEST_SENTENCES_PATH)
 test_lines_original = utilities.read_test_sentences_original(utilities.TEST_SENTENCES_PATH)
 
-en_basic_ngram_dict[n] = utilities.cal_ngram_char_prob(en_basic_ngram_dict, n)
-fr_basic_ngram_dict[n] = utilities.cal_ngram_char_prob(fr_basic_ngram_dict, n)
-vi_basic_ngram_dict[n] = utilities.cal_ngram_char_prob(vi_basic_ngram_dict, n)
+en_basic_ngram_prob = utilities.cal_ngram_char_prob(en_basic_ngram_dict, n)
+fr_basic_ngram_prob = utilities.cal_ngram_char_prob(fr_basic_ngram_dict, n)
+vi_basic_ngram_prob = utilities.cal_ngram_char_prob(vi_basic_ngram_dict, n)
 
 with open("output.txt", "w") as output_file:
 	for index in range(0, len(test_lines)):
 		# EN
-		prob_en = utilities.cal_lang_char_prob(en_basic_ngram_dict[n], n, test_lines[index])
+		prob_en = utilities.cal_lang_char_prob(en_basic_ngram_prob, en_basic_ngram_dict, n, test_lines[index])
 		# FR
-		prob_fr = utilities.cal_lang_char_prob(fr_basic_ngram_dict[n], n, test_lines[index])
+		prob_fr = utilities.cal_lang_char_prob(fr_basic_ngram_prob, fr_basic_ngram_dict, n, test_lines[index])
 		# VI
-		prob_vi = utilities.cal_lang_char_prob(vi_basic_ngram_dict[n], n, test_lines[index])
+		prob_vi = utilities.cal_lang_char_prob(vi_basic_ngram_prob, vi_basic_ngram_dict, n, test_lines[index])
 
 		if prob_en > prob_fr and prob_en > prob_vi:
 			output_file.write(test_lines_original[index] + " (EN)\n")

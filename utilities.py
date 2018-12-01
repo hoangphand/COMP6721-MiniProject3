@@ -17,6 +17,7 @@ DUMP_UNI_LANG_MODEL_OT = "dump_models/unigramOT.txt"
 DUMP_BI_LANG_MODEL_EN = "dump_models/bigramEN.txt"
 DUMP_BI_LANG_MODEL_FR = "dump_models/bigramFR.txt"
 DUMP_BI_LANG_MODEL_OT = "dump_models/bigramOT.txt"
+DELTA = 0.5
 
 def extract_basic_corpus(corpus_path):
 	with open(corpus_path, "r") as input_file:
@@ -38,39 +39,48 @@ def extract_corpus_experimental(corpus_path, case_sensitive = False):
 	return corpus
 
 def extract_basic_ngram_char(corpus, n):
-	ngram = [{}]
-	ngram_1 = {"total_count": 0}
-	total_count_1 = 0
+	if n == 1:
+		ngram_1 = {"total_count": 0}
+		for char in ascii_lowercase:
+			ngram_1[char] = {"total_count": 0}
 
-	for char in ascii_lowercase:
-		ngram_1[char] = {"total_count": 0}
+		for i in range(0, len(corpus)):
+			element = corpus[i:i + 1]
+			if element.isalpha():
+				ngram_1["total_count"] += 1
+				ngram_1[element]["total_count"] += 1
 
-	for i in range(0, len(corpus)):
-		element = corpus[i:i + 1]
-		if element.isalpha():
-			ngram_1["total_count"] += 1
-			ngram_1[element]["total_count"] += 1
+		return [{}, ngram_1]
+	else:
+		ngram_n_1 = {"total_count": 0}
+		ngram_n = {"total_count": 0}
 
-	ngram.append(ngram_1)
+		for i in range(0, len(corpus)):
+			element = corpus[i:i + n - 1]
+			if len(element) == n - 1:
+				ngram_n_1["total_count"] += 1
 
-	if n > 1:
-		i = 2
-		while i <= n:
-			ngram_n = {"total_count": 0}
+				if element in ngram_n_1:
+					ngram_n_1[element]["total_count"] += 1
+				else:
+					ngram_n_1[element] = {"total_count": 1}
 
-			for key in ngram[i - 1]:
-				if key != "total_count":
-					for char in ascii_lowercase:
-						ngram_n[key + char] = {"total_count": 0}
+		for i in range(0, len(corpus)):
+			element = corpus[i:i + n]
+			if len(element) == n:
+				ngram_n["total_count"] += 1
 
-			for j in range(0, len(corpus)):
-				element = corpus[j:j + i]
-				if element.isalpha() and len(element) == i:
-					ngram_n["total_count"] += 1
+				if element in ngram_n:
 					ngram_n[element]["total_count"] += 1
+				else:
+					ngram_n[element] = {"total_count": 1}
 
-			ngram.append(ngram_n)
-			i = i + 1
+		ngram = []
+		for i in range(0, n - 1):
+			ngram.append({})
+
+		ngram.append(ngram_n_1)
+		ngram.append(ngram_n)
 	
 	return ngram
 
@@ -121,13 +131,9 @@ def extract_experimental_ngram_char(corpus, n, case_sensitive = False):
 	
 	return ngram
 
-def cal_ngram_char_prob(ngram, n, delta = 0.5):
+def cal_ngram_char_prob(ngram, n, delta = DELTA):
 	ngram_n = copy.deepcopy(ngram[n])
-	# count for non-zero total_count keys
-	size_ngram = 0
-	for key in ngram_n:
-		if key != "total_count" and ngram_n[key]["total_count"] != 0:
-			size_ngram += 1
+	size_ngram = math.pow(26, n)
 
 	if n == 1:
 		for key in ngram_n:
@@ -139,8 +145,8 @@ def cal_ngram_char_prob(ngram, n, delta = 0.5):
 		for key in ngram_n:
 			if key != "total_count":
 				prev_key = key[0:len(key) - 1]
-				total_count = ngram_prev[prev_key]["total_count"]
-				ngram_n[key]["total_count"] = (ngram_n[key]["total_count"] + delta) / (total_count + delta * size_ngram)
+				total_count_prev = ngram_prev[prev_key]["total_count"]
+				ngram_n[key]["total_count"] = (ngram_n[key]["total_count"] + delta) / (total_count_prev + delta * size_ngram)
 
 	return ngram_n
 
@@ -204,13 +210,23 @@ def read_test_sentences(path, case_sensitive = False):
 
 	return processed_lines
 
-def cal_lang_char_prob(ngram, n, test):
+def cal_lang_char_prob(ngram_prob, ngram_count, n, test):
 	prob = 0
+	size_ngram = math.pow(26, n)
 
 	for i in range(0, len(test)):
-		element = test[i:i + n]
-		if len(element) == n and element.replace(" ", "").isalpha():
-			prob += math.log(ngram[element]["total_count"], 10)
+		key = test[i:i + n]
+		if len(key) == n and key.replace(" ", "").isalpha():
+			if key in ngram_prob:
+				prob += math.log(ngram_prob[key]["total_count"], 10)
+			else:
+				prev_key = key[0:len(key) - 1]
+				if prev_key in ngram_count:
+					smoothing = (DELTA) / (ngram_count[prev_key]["total_count"] + DELTA * size_ngram)
+				else:
+					smoothing = (DELTA) / (DELTA + DELTA * size_ngram)
+
+				prob += math.log(smoothing, 10)
 
 	return prob
 
