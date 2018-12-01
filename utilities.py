@@ -55,6 +55,7 @@ def extract_basic_ngram_char(corpus, n):
 		ngram_n_1 = {"total_count": 0}
 		ngram_n = {"total_count": 0}
 
+		# N - 1
 		for i in range(0, len(corpus)):
 			element = corpus[i:i + n - 1]
 			if len(element) == n - 1:
@@ -65,6 +66,7 @@ def extract_basic_ngram_char(corpus, n):
 				else:
 					ngram_n_1[element] = {"total_count": 1}
 
+		# N
 		for i in range(0, len(corpus)):
 			element = corpus[i:i + n]
 			if len(element) == n:
@@ -82,54 +84,56 @@ def extract_basic_ngram_char(corpus, n):
 		ngram.append(ngram_n_1)
 		ngram.append(ngram_n)
 	
-	return ngram
-
+		return ngram
+		
 def extract_experimental_ngram_char(corpus, n, case_sensitive = False):
-	ngram = [{}]
-	ngram_1 = {"total_count": 0}
-	total_count_1 = 0
+	if n == 1:
+		ngram_1 = {"total_count": 0}
+		total_count_1 = 0
 
-	for char in ascii_lowercase:
-		ngram_1[char] = {"total_count": 0}
+		for i in range(0, len(corpus)):
+			key = corpus[i:i + 1]
+			if key in ngram_1:
+				ngram_1["total_count"] += 1
+				ngram_1[key]["total_count"] += 1
+			else:
+				ngram_1[key] = {"total_count": 0}
 
-	if case_sensitive:
-		for char in ascii_uppercase:
-			ngram_1[char] = {"total_count": 0}
+		return [{}, ngram_1]
+	else:
+		ngram_n_1 = {"total_count": 0}
+		ngram_n = {"total_count": 0}
 
-	ngram_1[" "] = {"total_count": 0}
+		# N - 1
+		for i in range(0, len(corpus)):
+			key = corpus[i:i + n - 1]
+			if len(key) == n - 1:
+				ngram_n_1["total_count"] += 1
 
-	for i in range(0, len(corpus)):
-		element = corpus[i:i + 1]
-		ngram_1["total_count"] += 1
-		ngram_1[element]["total_count"] += 1
+				if key in ngram_n_1:
+					ngram_n_1[key]["total_count"] += 1
+				else:
+					ngram_n_1[key] = {"total_count": 1}
 
-	ngram.append(ngram_1)
+		# N
+		for i in range(0, len(corpus)):
+			key = corpus[i:i + n]
+			if len(key) == n:
+				ngram_n["total_count"] += 1
 
-	if n > 1:
-		i = 2
-		while i <= n:
-			ngram_n = {"total_count": 0}
+				if key in ngram_n:
+					ngram_n[key]["total_count"] += 1
+				else:
+					ngram_n[key] = {"total_count": 1}
 
-			for key in ngram[i - 1]:
-				if key != "total_count":
-					for char in ascii_lowercase:
-						ngram_n[key + char] = {"total_count": 0}
-					if case_sensitive:
-						for char in ascii_uppercase:
-							ngram_n[key + char] = {"total_count": 0}
-					if key != " ":
-						ngram_n[key + " "] = {"total_count": 0}
+		ngram = []
+		for i in range(0, n - 1):
+			ngram.append({})
 
-			for j in range(0, len(corpus)):
-				element = corpus[j:j + i]
-				if len(element) == i:
-					ngram_n["total_count"] += 1
-					ngram_n[element]["total_count"] += 1
-
-			ngram.append(ngram_n)
-			i = i + 1
+		ngram.append(ngram_n_1)
+		ngram.append(ngram_n)
 	
-	return ngram
+		return ngram
 
 def cal_ngram_char_prob(ngram, n, delta = DELTA):
 	ngram_n = copy.deepcopy(ngram[n])
@@ -138,15 +142,17 @@ def cal_ngram_char_prob(ngram, n, delta = DELTA):
 	if n == 1:
 		for key in ngram_n:
 			if key != "total_count":
-				ngram_n[key]["total_count"] = (ngram_n[key]["total_count"] + delta) / (ngram_n["total_count"] + delta * size_ngram)
+				key_count = ngram_n[key]["total_count"]
+				ngram_n[key]["total_count"] = (key_count + delta) / (ngram_n["total_count"] + delta * size_ngram)
 	else:
 		ngram_prev = copy.deepcopy(ngram[n - 1])
 
 		for key in ngram_n:
 			if key != "total_count":
 				prev_key = key[0:len(key) - 1]
+				key_count = ngram_n[key]["total_count"]
 				total_count_prev = ngram_prev[prev_key]["total_count"]
-				ngram_n[key]["total_count"] = (ngram_n[key]["total_count"] + delta) / (total_count_prev + delta * size_ngram)
+				ngram_n[key]["total_count"] = (key_count + delta) / (total_count_prev + delta * size_ngram)
 
 	return ngram_n
 
