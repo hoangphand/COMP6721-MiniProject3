@@ -6,24 +6,24 @@ n = 2
 delta = 0.5
 
 en_basic_corpus = utilities.extract_basic_corpus(utilities.EN_TRAINING_CORPUS_PATH)
-en_basic_ngram_dict = utilities.extract_basic_ngram_char(en_basic_corpus, n)
+en_basic_ngram_count = utilities.extract_basic_ngram_char(en_basic_corpus, n)
 
 fr_basic_corpus = utilities.extract_basic_corpus(utilities.FR_TRAINING_CORPUS_PATH)
-fr_basic_ngram_dict = utilities.extract_basic_ngram_char(fr_basic_corpus, n)
+fr_basic_ngram_count = utilities.extract_basic_ngram_char(fr_basic_corpus, n)
 
 vi_basic_corpus = utilities.extract_basic_corpus(utilities.OT_TRAINING_CORPUS_PATH)
-vi_basic_ngram_dict = utilities.extract_basic_ngram_char(vi_basic_corpus, n)
+vi_basic_ngram_count = utilities.extract_basic_ngram_char(vi_basic_corpus, n)
 
 test_lines = utilities.read_test_sentences_strip(utilities.TEST_SENTENCES_PATH)
 test_lines_original = utilities.read_test_sentences_original(utilities.TEST_SENTENCES_PATH)
 
-en_basic_ngram_dict_uni = utilities.cal_ngram_char_prob(en_basic_ngram_dict, 1)
-fr_basic_ngram_dict_uni = utilities.cal_ngram_char_prob(fr_basic_ngram_dict, 1)
-vi_basic_ngram_dict_uni = utilities.cal_ngram_char_prob(vi_basic_ngram_dict, 1)
+en_basic_ngram_prob_uni = utilities.cal_ngram_char_prob(en_basic_ngram_count, 1)
+fr_basic_ngram_prob_uni = utilities.cal_ngram_char_prob(fr_basic_ngram_count, 1)
+vi_basic_ngram_prob_uni = utilities.cal_ngram_char_prob(vi_basic_ngram_count, 1)
 
-en_basic_ngram_dict_bi = utilities.cal_ngram_char_prob(en_basic_ngram_dict, 2)
-fr_basic_ngram_dict_bi = utilities.cal_ngram_char_prob(fr_basic_ngram_dict, 2)
-vi_basic_ngram_dict_bi = utilities.cal_ngram_char_prob(vi_basic_ngram_dict, 2)
+en_basic_ngram_prob_bi = utilities.cal_ngram_char_prob(en_basic_ngram_count, 2)
+fr_basic_ngram_prob_bi = utilities.cal_ngram_char_prob(fr_basic_ngram_count, 2)
+vi_basic_ngram_prob_bi = utilities.cal_ngram_char_prob(vi_basic_ngram_count, 2)
 
 for index in range(0, len(test_lines)):
 	with open("output_files/out" + str(index + 1) + ".txt", "w") as output_file:
@@ -35,24 +35,24 @@ for index in range(0, len(test_lines)):
 		# UNIGRAM
 		output_file.write("UNIGRAM MODEL: \n\n")
 		for c in test_lines[index]:
-			if c in fr_basic_ngram_dict_uni:
-				prob_c_fr = fr_basic_ngram_dict_uni[c]["total_count"]
+			if c in fr_basic_ngram_prob_uni:
+				prob_c_fr = fr_basic_ngram_prob_uni[c]["total_count"]
 			else:
-				prob_c_fr = delta / (fr_basic_ngram_dict[1]["total_count"] + delta * v1)
+				prob_c_fr = delta / (fr_basic_ngram_count[1]["total_count"] + delta * v1)
 
 			prob_fr += math.log(prob_c_fr, 10)
 
-			if c in en_basic_ngram_dict_uni:
-				prob_c_en = en_basic_ngram_dict_uni[c]["total_count"]
+			if c in en_basic_ngram_prob_uni:
+				prob_c_en = en_basic_ngram_prob_uni[c]["total_count"]
 			else:
-				prob_c_en = delta / (en_basic_ngram_dict[1]["total_count"] + delta * v1)
+				prob_c_en = delta / (en_basic_ngram_count[1]["total_count"] + delta * v1)
 
 			prob_en += math.log(prob_c_en, 10)
 
-			if c in vi_basic_ngram_dict_uni:
-				prob_c_vi = vi_basic_ngram_dict_uni[c]["total_count"]
+			if c in vi_basic_ngram_prob_uni:
+				prob_c_vi = vi_basic_ngram_prob_uni[c]["total_count"]
 			else:
-				prob_c_vi = delta / (vi_basic_ngram_dict[1]["total_count"] + delta * v1)
+				prob_c_vi = delta / (vi_basic_ngram_count[1]["total_count"] + delta * v1)
 
 			prob_vi += math.log(prob_c_vi, 10)
 
@@ -85,31 +85,31 @@ for index in range(0, len(test_lines)):
 				pred = key[0:1]
 				succ = key[1:2]
 
-				if key in fr_basic_ngram_dict_bi:
-					prob_key_fr = fr_basic_ngram_dict_bi[key]["total_count"]
+				if key in fr_basic_ngram_prob_bi:
+					prob_key_fr = fr_basic_ngram_prob_bi[key]["total_count"]
 				else:
-					if pred in fr_basic_ngram_dict[1]:
-						prob_key_fr = delta / (fr_basic_ngram_dict[1][pred]["total_count"] + delta * v2)
+					if pred in fr_basic_ngram_count[1]:
+						prob_key_fr = delta / (fr_basic_ngram_count[1][pred]["total_count"] + delta * v2)
 					else:
 						prob_key_fr = delta / (delta + delta * v2)
 
 				prob_fr += math.log(prob_key_fr, 10)
 
-				if key in en_basic_ngram_dict_bi:
-					prob_key_en = en_basic_ngram_dict_bi[key]["total_count"]
+				if key in en_basic_ngram_prob_bi:
+					prob_key_en = en_basic_ngram_prob_bi[key]["total_count"]
 				else:
-					if pred in en_basic_ngram_dict[1]:
-						prob_key_en = delta / (en_basic_ngram_dict[1][pred]["total_count"] + delta * v2)
+					if pred in en_basic_ngram_count[1]:
+						prob_key_en = delta / (en_basic_ngram_count[1][pred]["total_count"] + delta * v2)
 					else:
 						prob_key_en = delta / (delta + delta * v2)
 
 				prob_en += math.log(prob_key_en, 10)
 				
-				if key in vi_basic_ngram_dict_bi:
-					prob_key_vi = vi_basic_ngram_dict_bi[key]["total_count"]
+				if key in vi_basic_ngram_prob_bi:
+					prob_key_vi = vi_basic_ngram_prob_bi[key]["total_count"]
 				else:
-					if pred in vi_basic_ngram_dict[1]:
-						prob_key_vi = delta / (vi_basic_ngram_dict[1][pred]["total_count"] + delta * v2)
+					if pred in vi_basic_ngram_count[1]:
+						prob_key_vi = delta / (vi_basic_ngram_count[1][pred]["total_count"] + delta * v2)
 					else:
 						prob_key_vi = delta / (delta + delta * v2)
 
