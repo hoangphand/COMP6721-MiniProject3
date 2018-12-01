@@ -11,7 +11,7 @@ fr_basic_ngram_count = utilities.extract_basic_ngram_char(fr_basic_corpus, n)
 vi_basic_corpus = utilities.extract_basic_corpus(utilities.OT_TRAINING_CORPUS_PATH)
 vi_basic_ngram_count = utilities.extract_basic_ngram_char(vi_basic_corpus, n)
 
-test_lines = utilities.read_test_sentences_strip(utilities.TEST_SENTENCES_PATH)
+test_lines = utilities.read_test_sentences_basic(utilities.TEST_SENTENCES_PATH)
 test_lines_original = utilities.read_test_sentences_original(utilities.TEST_SENTENCES_PATH)
 
 en_basic_ngram_prob = utilities.cal_ngram_char_prob(en_basic_ngram_count, n)

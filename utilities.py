@@ -163,7 +163,7 @@ def read_test_sentences_original(path):
 
 	return stripped_lines
 
-def read_test_sentences_strip(path):
+def read_test_sentences_basic(path):
 	lines = []
 	processed_lines = []
 
