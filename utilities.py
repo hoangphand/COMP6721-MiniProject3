@@ -10,7 +10,9 @@ FR_TRAINING_CORPUS_PATH = "training_text/trainFR.txt"
 EN_TRAINING_CORPUS_PATH = "training_text/trainEN.txt"
 OT_TRAINING_CORPUS_PATH = "training_text/trainOT.txt"
 TEST_SENTENCES_PATH = "test_sentences.txt"
-NEW_TEST_SENTENCES_PATH = "new_test_sentences.txt"
+EN_BIG_TEST_SENTENCES_PATH = "big_test_sets/en10k.txt"
+FR_BIG_TEST_SENTENCES_PATH = "big_test_sets/fr10k.txt"
+VI_BIG_TEST_SENTENCES_PATH = "big_test_sets/vi10k.txt"
 DUMP_UNI_LANG_MODEL_EN = "dump_models/unigramEN.txt"
 DUMP_UNI_LANG_MODEL_FR = "dump_models/unigramFR.txt"
 DUMP_UNI_LANG_MODEL_OT = "dump_models/unigramOT.txt"
@@ -85,7 +87,7 @@ def extract_basic_ngram_char(corpus, n):
 		ngram.append(ngram_n)
 	
 		return ngram
-		
+
 def extract_experimental_ngram_char(corpus, n, case_sensitive = False):
 	if n == 1:
 		ngram_1 = {"total_count": 0}
