@@ -218,7 +218,7 @@ def read_test_sentences(path, case_sensitive = False):
 
 	return processed_lines
 
-def cal_lang_char_prob(ngram_prob, ngram_count, n, test):
+def cal_lang_char_prob(ngram_prob, ngram_count, n, test, delta = DELTA):
 	prob = 0
 	size_ngram = math.pow(26, n)
 
@@ -230,9 +230,9 @@ def cal_lang_char_prob(ngram_prob, ngram_count, n, test):
 			else:
 				prev_key = key[0:len(key) - 1]
 				if prev_key in ngram_count:
-					smoothing = (DELTA) / (ngram_count[prev_key]["total_count"] + DELTA * size_ngram)
+					smoothing = (delta) / (ngram_count[prev_key]["total_count"] + delta * size_ngram)
 				else:
-					smoothing = (DELTA) / (DELTA + DELTA * size_ngram)
+					smoothing = (delta) / (delta + delta * size_ngram)
 
 				prob += math.log(smoothing, 10)
 
