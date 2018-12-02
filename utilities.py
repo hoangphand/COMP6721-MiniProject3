@@ -279,3 +279,15 @@ def dump_models(ngram_en, ngram_fr, ngram_ot, n):
 						pred = key[1:2]
 						output_file.write("(" + succ + "|" + pred + ") = " + str(ngram_ot[n][key]["total_count"]))
 						output_file.write("\n")
+
+def extract_word_count_from_corpus(corpus):
+	list_words = corpus.split()
+	word_count = {"total_count": len(list_words)}
+
+	for word in list_words:
+		if word not in word_count:
+			word_count[word] = {"total_count": 1}
+		else:
+			word_count[word]["total_count"] += 1
+
+	return word_count
