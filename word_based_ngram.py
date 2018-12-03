@@ -5,7 +5,7 @@ import utilities
 
 n = 1
 case_sensitive = True
-case_sensitive = False
+# case_sensitive = False
 delta = 0.5
 
 def cal_lang_prob(word_count, test, delta = 0.5):
@@ -33,48 +33,72 @@ vi_word_count = utilities.extract_word_count_from_corpus(vi_basic_corpus)
 
 test_lines = utilities.read_test_sentences(utilities.TEST_SENTENCES_PATH, case_sensitive)
 
-for line in test_lines:
+en_test_lines = utilities.read_test_sentences(utilities.EN_BIG_TEST_SENTENCES_PATH, case_sensitive)
+fr_test_lines = utilities.read_test_sentences(utilities.FR_BIG_TEST_SENTENCES_PATH, case_sensitive)
+vi_test_lines = utilities.read_test_sentences(utilities.VI_BIG_TEST_SENTENCES_PATH, case_sensitive)
+
+delta = 0.1
+
+en_count = 0
+en_fr_count = 0
+en_vi_count = 0
+
+for line in en_test_lines:
 	prob_en = cal_lang_prob(en_word_count, line, delta)
 	prob_fr = cal_lang_prob(fr_word_count, line, delta)	
 	prob_vi = cal_lang_prob(vi_word_count, line, delta)
 
-# 	prob_en = 0
-# 	prob_fr = 0
-# 	prob_vi = 0
-
-# 	line = line.lower()
-# 	for punctuation in string.punctuation:
-# 		line = line.replace(punctuation, " ")
-# 	# no_distinct_words = len(dict_words)
-
-# 	words = line.split()
-# 	for index in range(0, len(words)):
-# 		if words[index] not in en_word_count:
-# 			prob_word_en = (delta) / (en_total_words + len(en_word_count) * delta)
-# 		else:
-# 			prob_word_en = (en_word_count[words[index]] + delta) / (en_total_words + len(en_word_count) * delta)
-
-# 		if words[index] not in fr_word_count:
-# 			prob_word_fr = (delta) / (fr_total_words + len(fr_word_count) * delta)
-# 		else:
-# 			prob_word_fr = (fr_word_count[words[index]] + delta) / (fr_total_words + len(fr_word_count) * delta)
-
-# 		if words[index] not in vi_word_count:
-# 			prob_word_vi = (delta) / (vi_total_words + len(vi_word_count) * delta)
-# 		else:
-# 			prob_word_vi = (vi_word_count[words[index]] + delta) / (vi_total_words + len(vi_word_count) * delta)
-
-# 		prob_en += math.log(prob_word_en, 10)
-# 		prob_fr += math.log(prob_word_fr, 10)
-# 		prob_vi += math.log(prob_word_vi, 10)
-# 		# print(words[index])
-# 		# print("- in EN: " + str(prob_word_en) + ", prob so far: " + str(prob_en))
-# 		# print("- in FR: " + str(prob_word_fr) + ", prob so far: " + str(prob_fr))
-# 		# print("- in VI: " + str(prob_word_vi) + ", prob so far: " + str(prob_vi))
+	length = len(line.split())
 
 	if prob_en > prob_fr and prob_en > prob_vi:
-		print(line + " (EN)")
+		en_count += 1
 	elif prob_fr > prob_en and prob_fr > prob_vi:
-		print(line + " (FR)")
+		en_fr_count += 1
 	else:
-		print(line + " (VI)")
+		en_vi_count += 1
+
+print("EN: " + str(en_count / 100))
+print("EN_FR: " + str(en_fr_count))
+print("EN_VI: " + str(en_vi_count))
+
+fr_count = 0
+fr_en_count = 0
+fr_vi_count = 0
+for line in fr_test_lines:
+	prob_en = cal_lang_prob(en_word_count, line, delta)
+	prob_fr = cal_lang_prob(fr_word_count, line, delta)	
+	prob_vi = cal_lang_prob(vi_word_count, line, delta)
+
+	length = len(line.split())
+
+	if prob_en > prob_fr and prob_en > prob_vi:
+		fr_en_count += 1
+	elif prob_fr > prob_en and prob_fr > prob_vi:
+		fr_count += 1
+	else:
+		fr_vi_count += 1
+
+print("FR: " + str(fr_count / 100))
+print("FR_EN: " + str(fr_en_count))
+print("FR_VI: " + str(fr_vi_count))
+
+vi_count = 0
+vi_en_count = 0
+vi_fr_count = 0
+for line in vi_test_lines:
+	prob_en = cal_lang_prob(en_word_count, line, delta)
+	prob_fr = cal_lang_prob(fr_word_count, line, delta)	
+	prob_vi = cal_lang_prob(vi_word_count, line, delta)
+
+	length = len(line.split())
+
+	if prob_en > prob_fr and prob_en > prob_vi:
+		vi_en_count += 1
+	elif prob_fr > prob_en and prob_fr > prob_vi:
+		vi_fr_count += 1
+	else:
+		vi_count += 1
+
+print("VI: " + str(vi_count / 100))
+print("VI_FR: " + str(vi_fr_count))
+print("VI_EN: " + str(vi_en_count))
